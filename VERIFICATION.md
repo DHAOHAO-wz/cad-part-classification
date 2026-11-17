@@ -10,6 +10,7 @@
 - 仓库：本地 Git 仓库 `cad_classifier/`（尚未推送远程，暂无远程 commit 链接）
 - Commit：`dd913563cb66957f0f42d5b1e85ffe0f4876dbad` —— 中期原型: 点云几何特征 + sklearn 轻量分类基线跑通
 - Commit：`4e90c4b` —— 补充 README 与可验证材料清单
+- Commit：`f922e19809f84d500137911bee8df7923b2cf250` —— 补充终端运行截图与输出文本，更新验证清单
 
 ## 运行产物
 - `train_log.txt`：完整运行日志（数据规模、特征维度、各模型准确率 / 加权 F1、分类报告）
