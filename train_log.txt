@@ -1,0 +1,31 @@
+=== CAD part classification prototype ===
+scikit-learn / numpy / matplotlib pipeline, seed=42
+
+[1] dataset: 480 samples x 2048 points, categories = ['block', 'bracket_L', 'cylinder', 'plate_holes']
+[2] feature matrix: (480, 17), features = 17
+    train=360  test=120 (stratified split)
+
+[3] baseline comparison on held-out test set:
+    RandomForest    accuracy=1.0000  weighted-F1=1.0000
+    SVM (RBF)       accuracy=1.0000  weighted-F1=1.0000
+    k-NN            accuracy=1.0000  weighted-F1=1.0000
+    MLP             accuracy=1.0000  weighted-F1=1.0000
+
+    best model: RandomForest (acc=1.0000, F1=1.0000)
+
+[4] classification report (best model):
+              precision    recall  f1-score   support
+
+       block      1.000     1.000     1.000        30
+   bracket_L      1.000     1.000     1.000        30
+    cylinder      1.000     1.000     1.000        30
+ plate_holes      1.000     1.000     1.000        30
+
+    accuracy                          1.000       120
+   macro avg      1.000     1.000     1.000       120
+weighted avg      1.000     1.000     1.000       120
+
+    saved /home/user/Doubao/chats/38453290692392450/cad_classifier/assets/confusion_matrix.png
+    saved /home/user/Doubao/chats/38453290692392450/cad_classifier/assets/feature_importance.png
+
+[done] elapsed 14.9s
