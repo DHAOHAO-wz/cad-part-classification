@@ -28,4 +28,4 @@ weighted avg      1.000     1.000     1.000       120
     saved /home/user/Doubao/chats/38453290692392450/cad_classifier/assets/confusion_matrix.png
     saved /home/user/Doubao/chats/38453290692392450/cad_classifier/assets/feature_importance.png
 
-[done] elapsed 14.9s
+[done] elapsed 15.0s
