@@ -29,6 +29,9 @@ python3 train.py
 - `data.py`：点云数据生成（占位；后续替换为真实数据集加载）。
 - `features.py`：可解释几何特征提取（包围盒比例、PCA 各向异性、局部平面度等）。
 - `train.py`：特征标准化、训练 / 测试划分、基线对比（随机森林 / SVM / k-NN / MLP）与可视化。
+- `skeleton/`：面向真实数据接入的配套代码骨架（`feature_extraction.py` 几何特征清单、
+  `classification.py` 基线与评估流程、`README_skeleton.md` 接入说明）；标 `TODO` 处
+  接入真实 CAD 数据集后补全，与本目录可运行原型区分。
 
 ## 演示与可验证材料
 - 现场演示：运行 `python3 train.py`，展示日志输出与两张图。
