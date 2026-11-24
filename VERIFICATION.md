@@ -14,6 +14,7 @@
 - Commit：[`c8f0fc6`](https://github.com/DHAOHAO-wz/cad-part-classification/commit/c8f0fc67612a6c8714ff514b1e7cdaeea844f895) —— 回填最新 commit 哈希到验证清单
 - Commit：[`e138f8b`](https://github.com/DHAOHAO-wz/cad-part-classification/commit/e138f8ba5ffc6f407de6ceaf2ce53b8363fbdce6) —— 纳入面向真实数据的特征提取/分类骨架，刷新运行日志与结果图
 - Commit：[`a98ff48`](https://github.com/DHAOHAO-wz/cad-part-classification/commit/a98ff483972909de22af130a7efb220be87f2cd6) —— 回填骨架提交的 commit 哈希
+- Commit：[`74a9cbd`](https://github.com/DHAOHAO-wz/cad-part-classification/commit/74a9cbda4c4fd61608d8f01b5f8eb5819e32aa2c) —— 更新远程 GitHub 仓库地址与 commit 链接
 
 ## 运行产物
 - `train_log.txt`：完整运行日志（数据规模、特征维度、各模型准确率 / 加权 F1、分类报告）
