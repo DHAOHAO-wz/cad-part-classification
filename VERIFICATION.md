@@ -12,7 +12,7 @@
 ## 代码提交记录
 
 - 远程仓库：https://github.com/DHAOHAO-wz/cad-part-classification （分支 `master`）
-- 期末提交 HEAD：[`d004ff1`](https://github.com/DHAOHAO-wz/cad-part-classification/commit/d004ff1faf0eda09f1358cb692e9f7366258841b) —— 期末交付：pytest 测试、metrics.csv 指标汇总、analysis 分析与规范 README/requirements
+- 期末交付提交：[`d004ff1`](https://github.com/DHAOHAO-wz/cad-part-classification/commit/d004ff1faf0eda09f1358cb692e9f7366258841b) —— 期末交付：pytest 测试、metrics.csv 指标汇总、analysis 分析与规范 README/requirements；最新提交记录见 [commits 页面](https://github.com/DHAOHAO-wz/cad-part-classification/commits/master)
 
 ## 运行产物（均可由命令复现）
 
