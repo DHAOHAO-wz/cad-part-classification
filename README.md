@@ -1,38 +1,109 @@
-# CAD 零件分类原型（Python 与 CAD 关联 · 课程中期项目）
+# 基于几何特征工程与轻量机器学习的 CAD 零件分类
 
-## 选题
-基于几何特征工程与轻量机器学习的 CAD 零件分类：输入三角网格 / 点云，
-提取可解释的几何特征，用轻量分类模型输出零件类别（支架、法兰、垫块、带孔板件等）。
+Python 课程期末项目：输入采样点云，提取可解释的手工几何特征，用轻量机器学习模型完成四类 CAD 零件分类，并完成四基线对比实验、单元测试与量化结果分析。
 
-## 当前阶段（中期）
-- 已跑通「点云 → 手工几何特征 → 轻量分类基线」全流程原型。
-- 数据为**合成点云占位**，仅用于验证流程可端到端运行；真实 CAD 数据集
-  （Fusion 360 Gallery / ABC 子集）接入后替换 `data.py` 即可，特征与训练代码不变。
-- 合成数据类别极易区分，当前准确率为流程验证结果，**不代表真实数据性能**。
+## 1. 选题与方法
 
-## 环境依赖
-- Python 3.10+
-- numpy、scikit-learn、matplotlib（已在课程环境验证：numpy 1.26.4 / sklearn 1.4.0 / matplotlib 3.11.0）
-- 后续接入真实网格时再按需安装 trimesh / Open3D / PythonOCC。
+- **任务**：对 `block`（方块）、`bracket_L`（L 形支架）、`cylinder`（圆柱）、`plate_holes`（带孔板件）四类零件进行点云分类。
+- **技术路线**：点云 → 17 维手工几何特征（包络尺寸/比例、质心距离分布、PCA 各向异性、局部平面度等）→ `StandardScaler` 标准化 → 四个轻量基线对比（Random Forest / SVM-RBF / k-NN / MLP）。
+- **选择依据**：样本量有限、类别形态可由几何量刻画；手工特征 + 轻量模型数据需求小、CPU 秒级可训练、结果可解释，避免直接处理原始点云的深度学习方法对样本量与 GPU 的高要求。
 
-## 运行方式
+## 2. 环境与依赖
+
+- **Python 版本**：3.12.11（3.10+ 均可运行）
+- **第三方依赖及版本**：见 [`requirements.txt`](requirements.txt)
+
+| 依赖 | 版本 | 用途 |
+| --- | --- | --- |
+| numpy | 1.26.4 | 数值计算、点云与特征矩阵 |
+| scikit-learn | 1.4.0 | 分类基线、划分、标准化、评估指标 |
+| matplotlib | 3.11.0 | 混淆矩阵、特征重要性可视化 |
+| pytest | 9.2.0 | 单元测试 |
+
+## 3. 数据集说明
+
+| 项目 | 内容 |
+| --- | --- |
+| 数据集名称 | 内置合成点云集 `synthetic-cad-parts`（占位数据） |
+| 数据集版本 | v1（由脚本生成，无外部下载链接） |
+| 生成脚本 | `data.py` 中的 `make_dataset()` |
+| 样本规模 | 480 个样本，每类 120 个；每个点云 2048 个采样点 |
+| 类别 | `block` / `bracket_L` / `cylinder` / `plate_holes` |
+| 随机种子 | `RANDOM_STATE = 42`（可复现） |
+
+### 数据获取与预处理步骤
+
+1. **无需外部下载**：合成点云由 `data.py` 在运行时按固定种子生成，含少量高斯抖动模拟真实采样噪声。
+2. **预处理**：点云进入特征提取前做中心化与尺度归一；特征矩阵在训练集上拟合 `StandardScaler`，再作用于测试集。
+3. **真实数据接入（预留）**：后续可替换为真实 CAD 网格/点云数据集（如 Fusion 360 Gallery、ABC 子集）。接入骨架见 `skeleton/`（`feature_extraction.py`、`classification.py`、`README_skeleton.md`），接入时只需替换 `data.py` 的数据生成部分，特征与训练流程保持不变。
+
+> 说明：当前合成数据类别几何差异被刻意放大，测试集高分仅为流程验证结果，**不代表真实 CAD 零件上的泛化性能**。
+
+## 4. 主要超参数
+
+| 模型 / 环节 | 超参数 |
+| --- | --- |
+| 数据划分 | `TEST_SIZE = 0.25`，分层划分（stratified） |
+| Random Forest | `n_estimators=200`，`random_state=42` |
+| SVM (RBF) | `kernel='rbf'`，`C=10`，`random_state=42` |
+| k-NN | `n_neighbors=7` |
+| MLP | `hidden_layer_sizes=(32, 16)`，`max_iter=800`，`random_state=42` |
+
+## 5. 从安装到运行的完整命令序列
+
 ```bash
-python3 train.py
+# 1. 进入项目目录
+cd project
+
+# 2. 安装全部第三方依赖（版本见 requirements.txt）
+pip install -r requirements.txt
+
+# 3. 运行训练与四基线对比实验（生成日志、指标表与结果图）
+python train.py
+
+# 4. 运行单元测试（pytest）
+pytest -q
 ```
 
-## 输出
-- `train_log.txt`：运行日志（数据规模、特征维度、各模型准确率与加权 F1、分类报告）。
-- `assets/confusion_matrix.png`：最优模型混淆矩阵。
-- `assets/feature_importance.png`：随机森林特征重要性。
+## 6. 目录结构
 
-## 代码结构
-- `data.py`：点云数据生成（占位；后续替换为真实数据集加载）。
-- `features.py`：可解释几何特征提取（包围盒比例、PCA 各向异性、局部平面度等）。
-- `train.py`：特征标准化、训练 / 测试划分、基线对比（随机森林 / SVM / k-NN / MLP）与可视化。
-- `skeleton/`：面向真实数据接入的配套代码骨架（`feature_extraction.py` 几何特征清单、
-  `classification.py` 基线与评估流程、`README_skeleton.md` 接入说明）；标 `TODO` 处
-  接入真实 CAD 数据集后补全，与本目录可运行原型区分。
+```
+project/
+├── README.md                  # 本说明文档
+├── requirements.txt           # 第三方依赖及锁定版本
+├── analysis.md                # 实验设置、量化指标、特征重要性与结果分析
+├── data.py                    # 合成点云数据集生成（真实数据接入替换点）
+├── features.py                # 17 维手工几何特征提取
+├── train.py                   # 标准化、四基线对比训练、评估与可视化
+├── tests/
+│   ├── __init__.py
+│   └── test_pipeline.py       # pytest 单元测试（数据/特征/标准化/模型预测）
+├── results/
+│   └── metrics.csv            # 四基线 accuracy / weighted-F1 / 耗时汇总
+├── assets/                    # 结果图与可验证截图（运行生成）
+│   ├── confusion_matrix.png
+│   ├── feature_importance.png
+│   └── terminal_run.png
+├── train_log.txt              # 完整运行日志
+├── terminal_output.txt        # 终端原始输出文本
+└── skeleton/                  # 真实 CAD 数据接入预留骨架
+    ├── README_skeleton.md
+    ├── feature_extraction.py
+    └── classification.py
+```
 
-## 演示与可验证材料
-- 现场演示：运行 `python3 train.py`，展示日志输出与两张图。
-- 可验证材料：本目录运行日志 `train_log.txt`、上述两张结果图，以及 Git commit 记录。
+## 7. 测试与可复现说明
+
+- **单元测试**：`tests/test_pipeline.py`，共 5 个用例，覆盖数据集形状与类别均衡、同种子可复现、特征向量长度与数值有限、标准化后训练集近似零均值、四模型预测类别合法。运行：`pytest -q`。
+- **可复现性**：固定 `RANDOM_STATE = 42`；数据生成、划分、模型训练均使用该种子。
+- **实验产物**：
+  - `results/metrics.csv`：四基线 Accuracy / Weighted-F1 / 训练+预测耗时；
+  - `train_log.txt`：终端完整日志与分类报告；
+  - `assets/confusion_matrix.png`：最佳模型混淆矩阵；
+  - `assets/feature_importance.png`：随机森林特征重要性；
+  - 详细分析与讨论见 [`analysis.md`](analysis.md)。
+
+## 8. 代码提交记录
+
+- 远程仓库：https://github.com/DHAOHAO-wz/cad-part-classification （分支 `master`）
+- 可验证材料（运行截图、日志、Git commit 记录）见 `VERIFICATION.md`。

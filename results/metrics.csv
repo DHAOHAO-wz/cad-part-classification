@@ -1,0 +1,5 @@
+model,accuracy,weighted_f1,fit_predict_seconds
+RandomForest,1.0000,1.0000,0.160
+SVM (RBF),1.0000,1.0000,0.002
+k-NN,1.0000,1.0000,0.026
+MLP,1.0000,1.0000,0.084

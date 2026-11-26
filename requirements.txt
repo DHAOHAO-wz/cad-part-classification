@@ -1,0 +1,11 @@
+# 运行环境：Python 3.12.11（3.10+ 均可）
+# 安装：pip install -r requirements.txt
+
+# 数值计算
+numpy==1.26.4
+# 轻量分类基线与评估指标
+scikit-learn==1.4.0
+# 结果可视化（混淆矩阵、特征重要性图）
+matplotlib==3.11.0
+# 单元测试（pytest 用例，运行 `pytest -q`）
+pytest==9.2.0

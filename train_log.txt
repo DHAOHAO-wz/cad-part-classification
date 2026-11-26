@@ -25,7 +25,8 @@ scikit-learn / numpy / matplotlib pipeline, seed=42
    macro avg      1.000     1.000     1.000       120
 weighted avg      1.000     1.000     1.000       120
 
-    saved /home/user/Doubao/chats/38453290692392450/cad_classifier/assets/confusion_matrix.png
-    saved /home/user/Doubao/chats/38453290692392450/cad_classifier/assets/feature_importance.png
+    saved assets/confusion_matrix.png
+    saved assets/feature_importance.png
+    saved results/metrics.csv
 
-[done] elapsed 13.1s
+[done] elapsed 13.4s
